@@ -7,7 +7,7 @@ manga chapters to Comick.io for users with upload permissions.
 
 Author: darwin256
 Profile: https://comick.io/user/b9b6d682-3757-4fd9-9cb6-8e271a727871
-Version: 1.1.0
+Version: 1.2.0
 
 Features:
 - Clean, dynamic CLI interface showing progress for multiple chapters at once.
@@ -16,7 +16,7 @@ Features:
 - Processes chapter folders with integer or decimal names.
 - Auto-detects a "./chapters" folder as the default input directory.
 - Supports various image formats, converting them to JPEG for upload.
-- Interactive prompts for group selection, language, and a scheduled release timer.
+- Interactive prompts for group, language, volume, and scheduled release timer.
 - Configurable parallelism for uploading multiple chapters simultaneously.
 - Thread-safe progress feedback and logging.
 """
@@ -93,11 +93,8 @@ def load_cookies():
         cookies_dict = {}
         with open(COOKIES_FILE, 'r', encoding='utf-8') as f: cookies_data = json.load(f)
         for cookie in cookies_data: cookies_dict[cookie['name']] = cookie['value']
-        session.cookies.update(cookies_dict)
-        print("✅ Cookies loaded successfully.")
-        return session
-    except Exception as e:
-        print(f"❌ Error loading cookies: {e}"); return None
+        session.cookies.update(cookies_dict); print("✅ Cookies loaded successfully."); return session
+    except Exception as e: print(f"❌ Error loading cookies: {e}"); return None
 def get_manga_slug():
     while True:
         url = input("Enter the manga URL (e.g., https://comick.io/comic/official-test-manga): ")
@@ -108,8 +105,7 @@ def get_manga_slug():
         except Exception as e: print(f"An error occurred: {e}")
 def find_chapters(chapters_dir):
     if not os.path.isdir(chapters_dir): print(f"❌ Error: Directory '{chapters_dir}' not found."); return None
-    chapters = {}
-    chapter_pattern = re.compile(r'^\d+(\.\d+)?$')
+    chapters, chapter_pattern = {}, re.compile(r'^\d+(\.\d+)?$')
     dir_entries = sorted(os.listdir(chapters_dir), key=natural_sort_key)
     for entry in dir_entries:
         chap_path = Path(chapters_dir) / entry
@@ -132,8 +128,7 @@ def select_group(session):
         if search_term.lower() == 'exit': return None
         try:
             response = session.get(f"{API_BASE_URL}/search/group?k={quote(search_term)}")
-            response.raise_for_status()
-            results = response.json()
+            response.raise_for_status(); results = response.json()
             if not results: print("No groups found."); continue
             print("\nSearch Results:"); [print(f"  {i + 1}. {g['v']}") for i, g in enumerate(results)]; print("  0. Search again")
             while True:
@@ -153,25 +148,32 @@ def select_language():
         if lang_code in LANGUAGES: return lang_code
         else: print(f"Invalid code '{lang_code}'.")
 
-# --- NEW: Function to select release timer ---
+# --- NEW: Function to select Volume ---
+def select_volume():
+    """Prompts the user to enter an optional volume number for the batch."""
+    print("\n--- Volume Selection ---")
+    while True:
+        vol_str = input("Enter volume number for this batch (optional, press Enter to skip): ")
+        if not vol_str:
+            return None  # No volume
+        if vol_str.isdigit() and int(vol_str) > 0:
+            return vol_str
+        else:
+            print("Invalid input. Please enter a positive whole number for the volume.")
+
 def select_timer():
-    """Prompts the user to select a release delay timer."""
     print("\n--- Release Timer ---")
     while True:
         try:
             timer_str = input("Set release delay in hours (0-4, default: 0 for instant release): ")
-            if not timer_str:
-                return 0
+            if not timer_str: return 0
             timer = int(timer_str)
-            if 0 <= timer <= 4:
-                return timer
-            else:
-                print("Please enter a number between 0 and 4.")
-        except ValueError:
-            print("Invalid input. Please enter a number.")
+            if 0 <= timer <= 4: return timer
+            else: print("Please enter a number between 0 and 4.")
+        except ValueError: print("Invalid input.")
 
 def upload_image_to_s3(args):
-    image_path, s3_url, chap_num, total_images, progress_callback = args
+    image_path, s3_url, chap_num, progress_callback = args
     try:
         with Image.open(image_path) as img:
             if img.format.upper() == 'HEIC' and 'heif_image_plugin' not in globals(): log_message(f"[{chap_num}] ERROR: HEIC requires 'heif-image-plugin'."); return False
@@ -179,23 +181,21 @@ def upload_image_to_s3(args):
             buffer = io.BytesIO(); img.save(buffer, format='JPEG', quality=90)
             s3_headers = {"Content-Type": "image/jpeg"}
             response = requests.put(s3_url, data=buffer.getvalue(), headers=s3_headers)
-            response.raise_for_status()
-            progress_callback(); return True
+            response.raise_for_status(); progress_callback(); return True
     except Exception as e: log_message(f"[{chap_num}] ❌ Failed to upload {image_path.name}: {e}"); return False
 
-def upload_chapter(session, manga_slug, chap_num, image_paths, group_info, lang_code, timer):
+def upload_chapter(session, manga_slug, chap_num, image_paths, group_info, lang_code, timer, volume):
     """
     Orchestrates the upload for a single chapter.
-
-    MODIFIED: Now accepts `timer` and adds it to the payload if > 0.
+    
+    MODIFIED: Now accepts `volume` and adds it to the payload if present.
     """
     try:
         update_status(chap_num, "Requesting URLs...", 0.0)
         num_images = len(image_paths)
         payload = {"files": [f"{i+1:03d}.jpeg" for i in range(num_images)]}
         response = session.post(f"{API_BASE_URL}/presign", json=payload)
-        response.raise_for_status()
-        s3_urls = response.json()['urls']
+        response.raise_for_status(); s3_urls = response.json()['urls']
         update_status(chap_num, "Uploading Pages...", 0.1)
         successful_uploads = 0; upload_lock = threading.Lock()
         def progress_callback():
@@ -204,7 +204,7 @@ def upload_chapter(session, manga_slug, chap_num, image_paths, group_info, lang_
                 successful_uploads += 1
                 progress_percent = 0.1 + (successful_uploads / num_images) * 0.8
                 update_status(chap_num, f"Uploading ({successful_uploads}/{num_images})", progress_percent)
-        upload_tasks = [(path, url, chap_num, num_images, progress_callback) for path, url in zip(image_paths, s3_urls)]
+        upload_tasks = [(path, url, chap_num, progress_callback) for path, url in zip(image_paths, s3_urls)]
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             results = list(executor.map(upload_image_to_s3, upload_tasks))
         if not all(results): update_status(chap_num, "Failed (Page Upload)", 1.0); return chap_num, False
@@ -212,13 +212,12 @@ def upload_chapter(session, manga_slug, chap_num, image_paths, group_info, lang_
         final_payload = {"chap": chap_num, "lang": lang_code, "images": s3_urls}
         if "is_official" in group_info: final_payload["is_official"] = True
         elif "groups" in group_info: final_payload["groups"] = group_info["groups"]
-        # MODIFIED: Add timer to payload if it's set
-        if timer > 0:
-            final_payload["timer"] = str(timer)
+        if timer > 0: final_payload["timer"] = str(timer)
+        # MODIFIED: Add volume to payload if it's set
+        if volume:
+            final_payload["vol"] = volume
         response = session.post(f"{UPLOAD_API_BASE_URL}/comic/{manga_slug}/add-chapter", json=final_payload)
-        response.raise_for_status()
-        update_status(chap_num, "✅ Done", 1.0)
-        return chap_num, True
+        response.raise_for_status(); update_status(chap_num, "✅ Done", 1.0); return chap_num, True
     except Exception as e:
         error_msg = str(e)
         if hasattr(e, 'response') and e.response: error_msg += f" | {e.response.text[:100]}"
@@ -254,15 +253,18 @@ def main():
             
     print(f"\nFound {len(chapters_to_upload)} chapters to upload: {', '.join(chapters_to_upload.keys())}")
     
+    # --- NEW: Call volume selection ---
+    volume_number = select_volume()
+
     group_info = select_group(session)
     if not group_info: print("No group selected. Exiting."); return
 
     lang_code = select_language()
-    # --- NEW: Call timer selection ---
     timer_delay = select_timer()
     thread_count = get_thread_count()
 
-    # --- MODIFIED: Update summary to include timer info ---
+    # --- MODIFIED: Update summary to include volume info ---
+    volume_text = volume_number if volume_number else "Not Specified"
     timer_text = f"{timer_delay} hour(s)" if timer_delay > 0 else "Instant"
 
     print("\n" + "="*25)
@@ -271,6 +273,7 @@ def main():
     print(f"Manga Slug:        {manga_slug}")
     print(f"Chapters Path:     {chapters_dir}")
     print(f"Chapters Found:    {len(chapters_to_upload)}")
+    print(f"Volume:            {volume_text}")
     print(f"Upload As:         {group_info['name']}")
     print(f"Language:          {LANGUAGES[lang_code]} ({lang_code})")
     print(f"Release Timer:     {timer_text}")
@@ -288,8 +291,8 @@ def main():
     completed_count, failed_chapters = 0, []
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=thread_count) as executor:
-        # --- MODIFIED: Pass timer_delay to the upload_chapter function ---
-        futures = [executor.submit(upload_chapter, session, manga_slug, chap_num, paths, group_info, lang_code, timer_delay) 
+        # --- MODIFIED: Pass volume_number to the upload_chapter function ---
+        futures = [executor.submit(upload_chapter, session, manga_slug, chap_num, paths, group_info, lang_code, timer_delay, volume_number) 
                    for chap_num, paths in chapters_to_upload.items()]
         for future in concurrent.futures.as_completed(futures):
             chap_num, success = future.result()
