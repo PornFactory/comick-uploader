@@ -38,7 +38,7 @@ Choose one of the two methods below to get the files.
 ### Option 1: Direct Download (Recommended for most users)
 
 1.  **Download the latest release** from the link below:
-    > **[Download `comick-uploader-v1.1.0.zip`](https://github.com/darwin-256/comick-uploader/releases/latest)**
+    > **[Download `comick-uploader-v1.1.0.zip`](https://github.com/darwin-256/comick-uploader/releases/download/v1.1.0/comick-uploader-v1.1.0.zip)**
 
 2.  **Extract the `.zip` file** to a location of your choice.
 3.  **Open your terminal** or command prompt and navigate into the extracted `comick-uploader` folder.
