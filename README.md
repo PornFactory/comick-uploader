@@ -12,7 +12,7 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 
 ## 🎥 Demonstration
 
-![Script Demonstration GIF](https://raw.githubusercontent.com/darwin-256/comick-uploader/refs/heads/main/videos/script.gif)
+![Script Demonstration GIF](https://raw.githubusercontent.com/darwin-256/comick-uploader/refs/heads/main/videos/video.gif)
 
 ## ✨ Features
 
@@ -22,6 +22,7 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 -   **Convenient Default Directory**: Automatically detects and suggests a `./chapters` folder for quick use.
 -   **Multi-Language Support**: Allows you to select the chapter's language from a comprehensive list.
 -   **Versatile Group Selection**: Choose to upload as an "Official" release, search for a specific scanlation group, or upload with no group ("Unknown").
+-   **Scheduled Release Timer**: Schedule chapters to go live with a delay of up to 4 hours.
 -   **High Performance**: Uploads multiple chapters and their pages concurrently to maximize speed.
 -   **Secure Authentication**: Uses a local `cookies.txt` file, keeping your login credentials off the script.
 
@@ -37,7 +38,7 @@ Choose one of the two methods below to get the files.
 ### Option 1: Direct Download (Recommended for most users)
 
 1.  **Download the latest release** from the link below:
-    > **[Download `comick-uploader-v1.0.0.zip`](https://github.com/darwin-256/comick-uploader/releases/download/v1.0.0/comick-uploader-v1.0.0.zip)**
+    > **[Download `comick-uploader-v1.1.0.zip`](https://github.com/darwin-256/comick-uploader/releases/latest)**
 
 2.  **Extract the `.zip` file** to a location of your choice.
 3.  **Open your terminal** or command prompt and navigate into the extracted `comick-uploader` folder.
@@ -48,6 +49,7 @@ Choose one of the two methods below to get the files.
 ### Option 2: Using Git (For developers)
 
 1.  Clone this repository to your local machine.
+   
     ```bash
     git clone https://github.com/darwin-256/comick-uploader.git
     cd comick-uploader
@@ -133,6 +135,7 @@ The easiest way to get started is to use the included `chapters` folder.
     -   **Chapters Folder Path**: Press **Enter** to use the default `./chapters` folder, or provide a custom path.
     -   **Group Selection**: Choose `o` for Official, `s` to Search, or `u` for Unknown.
     -   **Language Selection**: Enter the language code or press **Enter** for English (`en`).
+    -   **Release Timer**: Set a release delay from 0 to 4 hours. Press **Enter** for an instant release (0 hours).
     -   **Parallel Uploads**: Choose how many chapters to upload at once (1-10) or press **Enter** for the default (3).
         > **Disclaimer**: Setting this value too high may cause the server to reject requests (`500 Server Error`). The default of 3 is recommended for stability. If you encounter errors, try a lower number.
     -   **Confirmation**: Review the summary and press `y` to begin.
