@@ -1,7 +1,15 @@
-# --- Add these lines to the bottom of the generated .gitignore file ---
+# --- Custom Rules ---
 
-# Ignore user-specific cookies file (contains sensitive authentication data)
+# Ignore user-specific cookies file
 cookies.txt
 
-# Ignore the default folder containing manga chapters
-chapters/
+# Ignore all content inside the chapters folder...
+chapters/*
+# ...but DO NOT ignore the placeholder file.
+!chapters/.gitkeep
+
+# Ignore the virtual environment folder
+venv/
+
+# Ignore the folder containing README assets
+videos/
