@@ -1,8 +1,8 @@
 # Comick.io CLI Uploader
 
 [![License: MIT](https://img.shields.io/github/license/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader/blob/main/LICENSE)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader/releases/latest)
 [![Last Commit](https://img.shields.io/github/last-commit/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader)
 
 ---
 
@@ -16,76 +16,73 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 
 ## ✨ Features
 
--   **Clean & Dynamic UI**: A modern, in-place updating interface shows the real-time progress of multiple chapter uploads.
--   **Cloudflare Bypass**: Seamlessly handles Cloudflare's JavaScript challenges and bot checks using `cloudscraper`.
+-   **Standalone Executable**: Easy-to-use `.exe` for Windows users—no Python installation required!
+-   **Clean & Dynamic UI**: A modern interface shows the real-time progress of multiple chapter uploads.
+-   **Cloudflare Bypass**: Seamlessly handles Cloudflare's JavaScript challenges and bot checks.
 -   **Flexible Chapter Numbering**: Supports chapter folders named with integers (`21`) or decimals (`21.5`).
--   **Convenient Default Directory**: Automatically detects and suggests a `./chapters` folder for quick use.
+-   **Volume Tagging**: Easily assign a volume number to your entire batch of chapter uploads.
 -   **Multi-Language Support**: Allows you to select the chapter's language from a comprehensive list.
--   **Versatile Group Selection**: Choose to upload as an "Official" release, search for a specific scanlation group, or upload with no group ("Unknown").
+-   **Versatile Group Selection**: Choose to upload as an "Official" release, search for a scanlation group, or upload with no group ("Unknown").
 -   **Scheduled Release Timer**: Schedule chapters to go live with a delay of up to 4 hours.
--   **High Performance**: Uploads multiple chapters and their pages concurrently to maximize speed.
--   **Secure Authentication**: Uses a local `cookies.txt` file, keeping your login credentials off the script.
+-   **High Performance**: Uploads multiple chapters and pages concurrently to maximize speed.
+-   **Secure Authentication**: Uses a local `cookies.txt` file, keeping your login credentials private.
 
-## 📋 Requirements
+## ⚙️ Installation & Setup
 
--   Python 3.7+
--   `pip` (Python package installer)
+Choose the guide that matches your needs.
 
-## ⚙️ Installation Guide
+### Guide A: For Windows Users (Easy Method)
 
-Choose one of the two methods below to get the files.
+This is the recommended method for most users on Windows. No Python is required.
 
-### Option 1: Direct Download (Recommended for most users)
+1.  **Download the latest release:**
+    > **[Download `comick-uploader-windows.zip`](https://github.com/darwin-256/comick-uploader/releases/latest)**
 
-1.  **Download the latest release** from the link below:
-    > **[Download `comick-uploader-v1.1.0.zip`](https://github.com/darwin-256/comick-uploader/releases/download/v1.1.0/comick-uploader-v1.1.0.zip)**
+2.  **Extract the `.zip` file** to a location of your choice. This folder contains `uploader.exe` and other necessary files.
 
-2.  **Extract the `.zip` file** to a location of your choice.
-3.  **Open your terminal** or command prompt and navigate into the extracted `comick-uploader` folder.
-    ```bash
-    cd path/to/your/extracted/comick-uploader
-    ```
+3.  **Configure `cookies.txt`**:
+    -   Follow the instructions in the **[Configuration Details](#-configuration-details)** section below to add your cookies to this file.
 
-### Option 2: Using Git (For developers)
+4.  **Add Your Chapters**: Place your chapter folders inside the included `chapters` directory.
 
-1.  Clone this repository to your local machine.
-   
+5.  **Run the Uploader**: Double-click `uploader.exe` to start the program.
+
+---
+
+### Guide B: For Developers & Other OS (Python Required)
+
+This method is for users on macOS/Linux or those who want to run the script from the source code.
+
+1.  **Requirements**: Ensure you have Python 3.7+ and Git installed.
+
+2.  **Clone the Repository**:
     ```bash
     git clone https://github.com/darwin-256/comick-uploader.git
     cd comick-uploader
     ```
 
----
-_After getting the files with either Option 1 or 2, continue with the steps below._
+3.  **Set Up Virtual Environment & Dependencies**:
+    ```bash
+    # Create and activate a virtual environment
+    python -m venv venv
+    # On Windows: venv\Scripts\activate
+    # On macOS/Linux: source venv/bin/activate
 
-### Set Up a Virtual Environment (Recommended)
+    # Install required packages
+    pip install -r requirements.txt
+    ```
 
-This isolates the script's dependencies and avoids conflicts with other Python projects.
+4.  **Configure `cookies.txt`**:
+    -   Follow the instructions in the **[Configuration Details](#-configuration-details)** section below to add your cookies.
 
-```bash
-# Create a virtual environment
-python -m venv venv
+5.  **Run the Script**:
+    ```bash
+    python uploader.py
+    ```
 
-# Activate it
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-```
+## 🛠️ Configuration Details
 
-### Install Dependencies
-
-With your virtual environment active, install the required libraries from `requirements.txt`.
-
-```bash
-pip install -r requirements.txt
-```
-
-## 🛠️ Configuration
-
-Before running the script, you must configure your authentication and chapter folders.
-
-### 1. Create `cookies.txt`
+### 1. How to Get Your Cookies
 
 This file is essential for authenticating your requests.
 
@@ -95,59 +92,63 @@ This file is essential for authenticating your requests.
     - Click the Cookie-Editor extension icon.
     - Click the **Export** button.
     - Choose **JSON** as the export format and **Copy to Clipboard**.
-4.  **Create the File**: Create `cookies.txt` in the script's folder and paste the copied JSON content into it.
+4.  **Paste into `cookies.txt`**: Open your `cookies.txt` file and replace its contents with the JSON you copied.
 
 > **Important**: If you encounter `403 Forbidden` errors, your Cloudflare cookie has likely expired. **Re-export your cookies** to fix this.
 
-### 2. Organize Chapter Folders
+### 2. How to Organize Chapter Folders
 
-The script expects a specific folder structure for your chapters.
+The script expects a specific folder structure.
 
 -   Each sub-folder **must be named with the chapter number** (e.g., `21`, `22.5`).
 -   Inside each folder, image files should be numbered in reading order (e.g., `01.png`, `02.png`).
 
-The easiest way to get started is to use the included `chapters` folder.
-
-**Default Structure:**
+**Example Structure:**
 ```
 /comick-uploader/
-├── uploader.py
-├── requirements.txt
-├── cookies.txt
-└── chapters/       <-- Default folder
+└── chapters/
     ├── 21/
     │   ├── 01.png
+    │   ├── 02.png
+    │   ├── 03.png
     │   └── ...
-    └── 22.5/
-        ├── 001.webp
+    ├── 21.5/
+    │   ├── 001.webp
+    │   ├── 002.webp
+    │   ├── 003.webp
+    │   └── ...
+    ├── 22/
+    │   ├── 01.png
+    │   ├── 02.png
+    │   └── ...
+    └── 23/
+        ├── 01.webp
+        ├── 02.webp
+        ├── 03.webp
         └── ...
+
 ```
 
-## 🚀 How to Run
+## 🚀 How to Use
 
-1.  Activate your virtual environment (if you created one).
-2.  Run the script from your terminal:
-    ```bash
-    python uploader.py
-    ```
-3.  Follow the interactive prompts:
-    -   **Manga URL**: Paste the URL of the manga series on Comick.io.
-    -   **Chapters Folder Path**: Press **Enter** to use the default `./chapters` folder, or provide a custom path.
-    -   **Group Selection**: Choose `o` for Official, `s` to Search, or `u` for Unknown.
-    -   **Language Selection**: Enter the language code or press **Enter** for English (`en`).
-    -   **Release Timer**: Set a release delay from 0 to 4 hours. Press **Enter** for an instant release (0 hours).
-    -   **Parallel Uploads**: Choose how many chapters to upload at once (1-10) or press **Enter** for the default (3).
-        > **Disclaimer**: Setting this value too high may cause the server to reject requests (`500 Server Error`). The default of 3 is recommended for stability. If you encounter errors, try a lower number.
-    -   **Confirmation**: Review the summary and press `y` to begin.
+After launching the program (`uploader.exe` or `python uploader.py`), follow the interactive prompts:
 
-A dynamic progress display will appear, showing the live status of your uploads.
+-   **Manga URL**: Paste the URL of the manga series on Comick.io.
+-   **Chapters Folder Path**: Press **Enter** to use the default `./chapters` folder, or provide a custom path.
+-   **Volume Number**: Enter a volume number for the batch or press **Enter** to skip.
+-   **Group Selection**: Choose `o` for Official, `s` to Search, or `u` for Unknown.
+-   **Language Selection**: Enter the language code or press **Enter** for English (`en`).
+-   **Release Timer**: Set a release delay from 0 to 4 hours. Press **Enter** for an instant release.
+-   **Parallel Uploads**: Choose how many chapters to upload at once (1-10) or press **Enter** for the default (3).
+    > **Disclaimer**: Setting this value too high may cause the server to reject requests (`500 Server Error`). The default of 3 is recommended for stability.
+-   **Confirmation**: Review the summary and press `y` to begin.
 
 ## 🔍 Troubleshooting
 
 -   **`Failed: 500 Server Error`**: The server rejected the request, likely due to a high volume of concurrent uploads. **Solution**: Rerun the script with a lower number of parallel uploads (e.g., the default of 3).
 -   **`403 Forbidden` Error**: Your Cloudflare cookie is invalid. **Solution**: Refresh comick.io in your browser and re-export your cookies into `cookies.txt`.
--   **`ModuleNotFoundError`**: Dependencies are not installed. **Solution**: Activate your virtual environment and run `pip install -r requirements.txt`.
--   **`FileNotFoundError: 'cookies.txt'`**: **Solution**: Ensure `cookies.txt` is in the same directory as `uploader.py`.
+-   **`ModuleNotFoundError`** (Python users): Dependencies are not installed. **Solution**: Activate your virtual environment and run `pip install -r requirements.txt`.
+-   **`FileNotFoundError: 'cookies.txt'`**: **Solution**: Ensure you have created and correctly named `cookies.txt` in the same directory as the executable/script.
 -   **UI Looks Garbled**: If the progress bar looks messy (e.g., you see `[K` or `[3A`), your terminal does not support ANSI escape codes. **Solution**: Use a modern terminal like Windows Terminal, PowerShell, or most terminals on macOS and Linux.
 
 ## ✍️ Author
