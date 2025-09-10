@@ -10,6 +10,3 @@ chapters/*
 
 # Ignore the virtual environment folder
 venv/
-
-# Ignore the folder containing README assets
-videos/
