@@ -32,18 +32,31 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 
 ## ⚙️ Installation Guide
 
-Follow these steps to get the uploader running on your system.
+Choose one of the two methods below to get the files.
 
-### 1. Clone the Repository
+### Option 1: Direct Download (Recommended for most users)
 
-First, clone this repository to your local machine.
+1.  **Download the latest release** from the link below:
+    > **[Download `comick-uploader-v1.0.0.zip`](https://github.com/PornFactory/comick-uploader/releases/download/v1.0.0/comick-uploader-v1.0.0.zip)**
 
-```bash
-git clone https://github.com/PornFactory/comick-uploader.git
-cd comick-uploader
-```
+2.  **Extract the `.zip` file** to a location of your choice.
+3.  **Open your terminal** or command prompt and navigate into the extracted `comick-uploader` folder.
+    ```bash
+    cd path/to/your/extracted/comick-uploader
+    ```
 
-### 2. Set Up a Virtual Environment (Recommended)
+### Option 2: Using Git (For developers)
+
+1.  Clone this repository to your local machine.
+    ```bash
+    git clone https://github.com/PornFactory/comick-uploader.git
+    cd comick-uploader
+    ```
+
+---
+_After getting the files with either Option 1 or 2, continue with the steps below._
+
+### Set Up a Virtual Environment (Recommended)
 
 This isolates the script's dependencies and avoids conflicts with other Python projects.
 
@@ -58,7 +71,7 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### Install Dependencies
 
 With your virtual environment active, install the required libraries from `requirements.txt`.
 
@@ -91,7 +104,7 @@ The script expects a specific folder structure for your chapters.
 -   Each sub-folder **must be named with the chapter number** (e.g., `21`, `22.5`).
 -   Inside each folder, image files should be numbered in reading order (e.g., `01.png`, `02.png`).
 
-The easiest way to get started is to create a folder named `chapters` in the root of the project directory.
+The easiest way to get started is to use the included `chapters` folder.
 
 **Default Structure:**
 ```
