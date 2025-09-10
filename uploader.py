@@ -7,7 +7,7 @@ manga chapters to Comick.io for users with upload permissions.
 
 Author: darwin256
 Profile: https://comick.io/user/b9b6d682-3757-4fd9-9cb6-8e271a727871
-Version: 1.6.0
+Version: 1.3.0
 
 Features:
 - Parses chapter titles directly from folder names (e.g., "1 - The Beginning").
