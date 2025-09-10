@@ -12,12 +12,7 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 
 ## 🎥 Demonstration
 
-<!--
-  <<< INSERT YOUR VIDEO/GIF DEMONSTRATION HERE >>>
-  You can record your screen using a tool like ScreenToGif or Kap and drag the file here.
-  Example:
-  
--->
+![Script Demonstration GIF](https://raw.githubusercontent.com/PornFactory/comick-uploader/refs/heads/main/videos/script.gif)
 
 ## ✨ Features
 
@@ -43,7 +38,7 @@ Follow these steps to get the uploader running on your system.
 
 First, clone this repository to your local machine.
 
-```
+```bash
 git clone https://github.com/PornFactory/comick-uploader.git
 cd comick-uploader
 ```
@@ -52,7 +47,7 @@ cd comick-uploader
 
 This isolates the script's dependencies and avoids conflicts with other Python projects.
 
-```
+```bash
 # Create a virtual environment
 python -m venv venv
 
@@ -67,7 +62,7 @@ source venv/bin/activate
 
 With your virtual environment active, install the required libraries from `requirements.txt`.
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
@@ -117,7 +112,7 @@ The easiest way to get started is to create a folder named `chapters` in the roo
 
 1.  Activate your virtual environment (if you created one).
 2.  Run the script from your terminal:
-    ```
+    ```bash
     python uploader.py
     ```
 3.  Follow the interactive prompts:
@@ -126,12 +121,14 @@ The easiest way to get started is to create a folder named `chapters` in the roo
     -   **Group Selection**: Choose `o` for Official, `s` to Search, or `u` for Unknown.
     -   **Language Selection**: Enter the language code or press **Enter** for English (`en`).
     -   **Parallel Uploads**: Choose how many chapters to upload at once (1-10) or press **Enter** for the default (3).
+        > **Disclaimer**: Setting this value too high may cause the server to reject requests (`500 Server Error`). The default of 3 is recommended for stability. If you encounter errors, try a lower number.
     -   **Confirmation**: Review the summary and press `y` to begin.
 
 A dynamic progress display will appear, showing the live status of your uploads.
 
 ## 🔍 Troubleshooting
 
+-   **`Failed: 500 Server Error`**: The server rejected the request, likely due to a high volume of concurrent uploads. **Solution**: Rerun the script with a lower number of parallel uploads (e.g., the default of 3).
 -   **`403 Forbidden` Error**: Your Cloudflare cookie is invalid. **Solution**: Refresh comick.io in your browser and re-export your cookies into `cookies.txt`.
 -   **`ModuleNotFoundError`**: Dependencies are not installed. **Solution**: Activate your virtual environment and run `pip install -r requirements.txt`.
 -   **`FileNotFoundError: 'cookies.txt'`**: **Solution**: Ensure `cookies.txt` is in the same directory as `uploader.py`.
