@@ -12,13 +12,14 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 
 ## 🎥 Demonstration
 
-![Script Demonstration GIF](https://raw.githubusercontent.com/darwin-256/comick-uploader/refs/heads/main/videos/video.gif)
+https://github.com/user-attachments/assets/b7c46da6-ab6b-4470-9353-83d687919e3d
 
 ## ✨ Features
 
 -   **Standalone Executable**: Easy-to-use `.exe` for Windows users—no Python installation required!
 -   **Clean & Dynamic UI**: A modern interface shows the real-time progress of multiple chapter uploads.
 -   **Cloudflare Bypass**: Seamlessly handles Cloudflare's JavaScript challenges and bot checks.
+-   **Automatic Title Parsing**: *New!* Automatically detects and applies chapter titles from your folder names (e.g., `21.5 - The Next Step`).
 -   **Flexible Chapter Numbering**: Supports chapter folders named with integers (`21`) or decimals (`21.5`).
 -   **Volume Tagging**: Easily assign a volume number to your entire batch of chapter uploads.
 -   **Multi-Language Support**: Allows you to select the chapter's language from a comprehensive list.
@@ -36,7 +37,7 @@ Choose the guide that matches your needs.
 This is the recommended method for most users on Windows. No Python is required.
 
 1.  **Download the latest release:**
-    > **[Download `comick-uploader-windows.zip`](https://github.com/darwin-256/comick-uploader/releases/latest)**
+    > **[Download the latest `comick-uploader-windows.zip`](https://github.com/darwin-256/comick-uploader/releases/latest)**
 
 2.  **Extract the `.zip` file** to a location of your choice. This folder contains `uploader.exe` and other necessary files.
 
@@ -98,34 +99,21 @@ This file is essential for authenticating your requests.
 
 ### 2. How to Organize Chapter Folders
 
-The script expects a specific folder structure.
+The script reads the chapter number **and title** directly from the folder names. Name your folders using one of the following formats:
 
--   Each sub-folder **must be named with the chapter number** (e.g., `21`, `22.5`).
--   Inside each folder, image files should be numbered in reading order (e.g., `01.png`, `02.png`).
+-   `ChapterNumber` (for chapters without a title)
+-   `ChapterNumber - Chapter Title` (for chapters with a title)
+
+The script will automatically parse the number and the title after the ` - `.
 
 **Example Structure:**
 ```
 /comick-uploader/
 └── chapters/
-    ├── 21/
-    │   ├── 01.png
-    │   ├── 02.png
-    │   ├── 03.png
-    │   └── ...
-    ├── 21.5/
-    │   ├── 001.webp
-    │   ├── 002.webp
-    │   ├── 003.webp
-    │   └── ...
-    ├── 22/
-    │   ├── 01.png
-    │   ├── 02.png
-    │   └── ...
-    └── 23/
-        ├── 01.webp
-        ├── 02.webp
-        ├── 03.webp
-        └── ...
+    ├── 21/                  <-- Will be uploaded as Chapter 21
+    ├── 21.5/                <-- Will be uploaded as Chapter 21.5
+    ├── 22 - The Awakening   <-- Will be uploaded as Chapter 22 with the title "The Awakening"
+    └── 23 - New Beginnings  <-- Will be uploaded as Chapter 23 with the title "New Beginnings"
 
 ```
 
