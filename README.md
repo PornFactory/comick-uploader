@@ -1,8 +1,8 @@
 # Comick.io CLI Uploader
 
-[![License: MIT](https://img.shields.io/github/license/PornFactory/comick-uploader)](https://github.com/PornFactory/comick-uploader/blob/main/LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/PornFactory/comick-uploader)](https://github.com/PornFactory/comick-uploader/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/PornFactory/comick-uploader)](https://github.com/PornFactory/comick-uploader)
+[![License: MIT](https://img.shields.io/github/license/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader/blob/main/LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/darwin-256/comick-uploader)](https://github.com/darwin-256/comick-uploader)
 
 ---
 
@@ -12,7 +12,7 @@ A powerful Python CLI tool for batch-uploading manga chapters to Comick.io, feat
 
 ## 🎥 Demonstration
 
-![Script Demonstration GIF](https://raw.githubusercontent.com/PornFactory/comick-uploader/refs/heads/main/videos/script.gif)
+![Script Demonstration GIF](https://raw.githubusercontent.com/darwin-256/comick-uploader/refs/heads/main/videos/script.gif)
 
 ## ✨ Features
 
@@ -37,7 +37,7 @@ Choose one of the two methods below to get the files.
 ### Option 1: Direct Download (Recommended for most users)
 
 1.  **Download the latest release** from the link below:
-    > **[Download `comick-uploader-v1.0.0.zip`](https://github.com/PornFactory/comick-uploader/releases/download/v1.0.0/comick-uploader-v1.0.0.zip)**
+    > **[Download `comick-uploader-v1.0.0.zip`](https://github.com/darwin-256/comick-uploader/releases/download/v1.0.0/comick-uploader-v1.0.0.zip)**
 
 2.  **Extract the `.zip` file** to a location of your choice.
 3.  **Open your terminal** or command prompt and navigate into the extracted `comick-uploader` folder.
@@ -49,7 +49,7 @@ Choose one of the two methods below to get the files.
 
 1.  Clone this repository to your local machine.
     ```bash
-    git clone https://github.com/PornFactory/comick-uploader.git
+    git clone https://github.com/darwin-256/comick-uploader.git
     cd comick-uploader
     ```
 
